@@ -1,43 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Colors */
-  --color-bg-primary: #0a0a0f;
-  --color-bg-secondary: #12121a;
-  --color-bg-tertiary: #1a1a25;
-  --color-bg-card: rgba(26, 26, 37, 0.8);
-  --color-bg-glass: rgba(255, 255, 255, 0.03);
-  
-  --color-primary: #8b5cf6;
-  --color-primary-light: #a78bfa;
-  --color-primary-dark: #7c3aed;
-  
-  --color-accent: #22d3ee;
-  --color-accent-light: #67e8f9;
-  
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
-  
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
-  
+  /* Light Theme - Ketto/Milaap Inspired */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f9fa;
+  --color-bg-tertiary: #f0f2f5;
+  --color-bg-card: #ffffff;
+  --color-bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Brand Colors - Warm and Hopeful */
+  --color-primary: #ff6b35;
+  --color-primary-light: #ff8c5a;
+  --color-primary-dark: #e55a2b;
+  --color-primary-bg: rgba(255, 107, 53, 0.1);
+
+  --color-secondary: #00a8a8;
+  --color-secondary-light: #00c4c4;
+  --color-secondary-dark: #008f8f;
+
+  --color-accent: #6c5ce7;
+  --color-accent-light: #a29bfe;
+
+  /* Status Colors */
+  --color-success: #00b894;
+  --color-warning: #fdcb6e;
+  --color-error: #e74c3c;
+  --color-info: #0984e3;
+
+  /* Text Colors */
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #4a4a68;
+  --color-text-muted: #8b8ba3;
+  --color-text-light: #ffffff;
+
+  /* Border Colors */
+  --color-border: #e8e8ef;
+  --color-border-hover: #d0d0dd;
+
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-  --gradient-accent: linear-gradient(135deg, #22d3ee 0%, #8b5cf6 100%);
-  --gradient-dark: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
-  --gradient-card: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(34, 211, 238, 0.05) 100%);
-  
+  --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+  --gradient-secondary: linear-gradient(135deg, #00a8a8 0%, #00c4c4 100%);
+  --gradient-hero: linear-gradient(135deg, #fff5f2 0%, #f0fffe 100%);
+  --gradient-card-hover: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 168, 168, 0.05) 100%);
+
   /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 60px rgba(139, 92, 246, 0.3);
-  
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -46,18 +60,23 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
-  
+  --spacing-4xl: 6rem;
+
   /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 50%;
-  
+
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 300ms ease;
   --transition-slow: 500ms ease;
+
+  /* Container */
+  --container-max: 1280px;
+  --header-height: 72px;
 }
 
 * {
@@ -71,8 +90,8 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--gradient-dark);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--color-bg-secondary);
   color: var(--color-text-primary);
   min-height: 100vh;
   line-height: 1.6;
@@ -91,7 +110,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
+  background: var(--color-bg-tertiary);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -100,7 +119,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-light);
+  background: var(--color-primary-dark);
 }
 
 /* Focus Styles */
@@ -117,13 +136,13 @@ body {
 
 /* Links */
 a {
-  color: var(--color-primary-light);
+  color: var(--color-primary);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-accent);
+  color: var(--color-primary-dark);
 }
 
 /* Buttons */
@@ -135,40 +154,113 @@ button {
 }
 
 /* Inputs */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
 }
 
 /* Animation Keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes heartbeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  14% {
+    transform: scale(1.1);
+  }
+
+  28% {
+    transform: scale(1);
+  }
+
+  42% {
+    transform: scale(1.1);
+  }
+
+  70% {
+    transform: scale(1);
+  }
 }
 
 .animate-fade-in {
@@ -184,11 +276,10 @@ input, textarea, select {
 }
 
 /* Utility Classes */
-.glass {
-  background: var(--color-bg-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--color-border);
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
 }
 
 .gradient-text {
@@ -202,4 +293,28 @@ input, textarea, select {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :root {
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+    --spacing-2xl: 2rem;
+    --spacing-3xl: 2.5rem;
+  }
 }

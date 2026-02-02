@@ -1,7 +1,21 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useWeb3 } from '../context/Web3Context';
 import CampaignCard from '../components/CampaignCard';
-import { Rocket, Zap, Shield, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
+import {
+    Heart,
+    ArrowRight,
+    Shield,
+    Zap,
+    Globe,
+    TrendingUp,
+    Users,
+    CheckCircle,
+    Sparkles,
+    Target,
+    Clock,
+    Award
+} from 'lucide-react';
 import './Home.css';
 
 const Home = () => {
@@ -30,26 +44,41 @@ const Home = () => {
     }, [contract]);
 
     const stats = [
-        { label: 'Total Campaigns', value: '150+', icon: Rocket },
-        { label: 'ETH Raised', value: '2,450', icon: TrendingUp },
-        { label: 'Backers', value: '12K+', icon: Zap },
+        { value: '₹150Cr+', label: 'Funds Raised' },
+        { value: '10,000+', label: 'Campaigns' },
+        { value: '1M+', label: 'Donors' },
+    ];
+
+    const categories = [
+        { icon: '🏥', name: 'Medical', count: '2,450 campaigns' },
+        { icon: '📚', name: 'Education', count: '1,230 campaigns' },
+        { icon: '🏠', name: 'Emergency', count: '890 campaigns' },
+        { icon: '🤝', name: 'NGO', count: '650 campaigns' },
+        { icon: '🎭', name: 'Creative', count: '420 campaigns' },
+        { icon: '🌱', name: 'Environment', count: '380 campaigns' },
+    ];
+
+    const steps = [
+        { number: 1, title: 'Start Your Fundraiser', description: 'Create your campaign in just 2 minutes with our easy-to-use form.' },
+        { number: 2, title: 'Share Your Story', description: 'Share your fundraiser with friends, family, and on social media.' },
+        { number: 3, title: 'Receive Donations', description: 'Collect funds securely via blockchain with complete transparency.' },
     ];
 
     const features = [
         {
             icon: Shield,
-            title: 'Secure & Transparent',
-            description: 'All transactions are recorded on the blockchain, ensuring complete transparency and security.'
+            title: 'Blockchain Secured',
+            description: 'Every transaction is recorded on the Ethereum blockchain for complete transparency and security.'
         },
         {
             icon: Zap,
-            title: 'Instant Funding',
-            description: 'Smart contracts enable immediate fund transfers without intermediaries.'
+            title: 'Instant Transfers',
+            description: 'No waiting period. Funds are transferred instantly through smart contracts.'
         },
         {
-            icon: Sparkles,
-            title: 'Decentralized',
-            description: 'No single point of failure. Your campaign lives on the blockchain forever.'
+            icon: Globe,
+            title: 'Global Reach',
+            description: 'Accept donations from anywhere in the world without currency conversion issues.'
         }
     ];
 
@@ -57,72 +86,109 @@ const Home = () => {
         <div className="home">
             {/* Hero Section */}
             <section className="hero">
-                <div className="hero-bg">
-                    <div className="hero-gradient-1"></div>
-                    <div className="hero-gradient-2"></div>
-                    <div className="hero-grid"></div>
-                </div>
+                <div className="hero-container">
+                    <div className="hero-content">
+                        <div className="hero-badge">
+                            <Heart size={16} />
+                            <span>Trusted by 1 Million+ Donors</span>
+                        </div>
 
-                <div className="hero-content">
-                    <div className="hero-badge">
-                        <Sparkles size={14} />
-                        <span>Powered by Ethereum</span>
-                    </div>
+                        <h1 className="hero-title">
+                            Empowering Dreams Through <span className="highlight">Crowdfunding</span>
+                        </h1>
 
-                    <h1 className="hero-title">
-                        Fund the Future with
-                        <span className="gradient-text"> Blockchain</span>
-                    </h1>
+                        <p className="hero-subtitle">
+                            Start your fundraiser in minutes. Join thousands of people raising funds for
+                            medical emergencies, education, NGOs, and more with blockchain transparency.
+                        </p>
 
-                    <p className="hero-subtitle">
-                        Launch your crowdfunding campaign on the blockchain.
-                        Transparent, secure, and borderless fundraising for everyone.
-                    </p>
+                        <div className="hero-actions">
+                            <Link to="/create" className="btn-primary">
+                                <span>Start a Fundraiser</span>
+                                <ArrowRight size={18} />
+                            </Link>
+                            <Link to="/campaigns" className="btn-secondary">
+                                Browse Campaigns
+                            </Link>
+                        </div>
 
-                    <div className="hero-actions">
-                        <a href="/create" className="btn-primary">
-                            <span>Start Campaign</span>
-                            <ArrowRight size={18} />
-                        </a>
-                        <a href="/campaigns" className="btn-secondary">
-                            Explore Projects
-                        </a>
-                    </div>
-
-                    <div className="hero-stats">
-                        {stats.map((stat, index) => (
-                            <div key={index} className="stat-item">
-                                <stat.icon className="stat-icon" size={24} />
-                                <div className="stat-content">
-                                    <span className="stat-value">{stat.value}</span>
-                                    <span className="stat-label">{stat.label}</span>
+                        <div className="hero-stats">
+                            {stats.map((stat, index) => (
+                                <div key={index} className="stat-item">
+                                    <div className="stat-value">
+                                        {stat.value}
+                                    </div>
+                                    <div className="stat-label">{stat.label}</div>
                                 </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="hero-image">
+                        <div className="hero-image-wrapper">
+                            <img
+                                src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=400&fit=crop"
+                                alt="People helping each other"
+                            />
+                        </div>
+                        <div className="hero-floating-card card-1">
+                            <div className="floating-icon">
+                                <CheckCircle size={20} />
                             </div>
-                        ))}
+                            <div className="floating-content">
+                                <span className="floating-value">₹5,00,000</span>
+                                <span className="floating-label">Just funded!</span>
+                            </div>
+                        </div>
+                        <div className="hero-floating-card card-2">
+                            <div className="floating-content">
+                                <span className="floating-value">+125</span>
+                                <span className="floating-label">New donors today</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Features Section */}
-            <section className="features-section">
+            {/* Trust Section */}
+            <section className="trust-section">
+                <div className="trust-container">
+                    <span className="trust-text">Trusted & Verified Platform</span>
+                    <div className="trust-logos">
+                        <div className="trust-logo">
+                            <Shield size={20} />
+                            <span>Blockchain Secured</span>
+                        </div>
+                        <div className="trust-logo">
+                            <Award size={20} />
+                            <span>Verified Campaigns</span>
+                        </div>
+                        <div className="trust-logo">
+                            <Users size={20} />
+                            <span>1M+ Happy Donors</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Categories Section */}
+            <section className="categories-section">
                 <div className="section-container">
                     <div className="section-header">
-                        <span className="section-tag">Why Choose Us</span>
-                        <h2 className="section-title">Built for the Future</h2>
+                        <span className="section-tag">Categories</span>
+                        <h2 className="section-title">Browse by Category</h2>
                         <p className="section-subtitle">
-                            Leverage blockchain technology for transparent and efficient crowdfunding
+                            Find campaigns that matter to you and make a difference
                         </p>
                     </div>
 
-                    <div className="features-grid">
-                        {features.map((feature, index) => (
-                            <div key={index} className="feature-card">
-                                <div className="feature-icon">
-                                    <feature.icon size={28} />
-                                </div>
-                                <h3 className="feature-title">{feature.title}</h3>
-                                <p className="feature-description">{feature.description}</p>
-                            </div>
+                    <div className="categories-grid">
+                        {categories.map((category, index) => (
+                            <Link to="/campaigns" key={index} className="category-card">
+                                <div className="category-icon">{category.icon}</div>
+                                <h3 className="category-name">{category.name}</h3>
+                                <span className="category-count">{category.count}</span>
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -132,10 +198,10 @@ const Home = () => {
             <section className="campaigns-section">
                 <div className="section-container">
                     <div className="section-header">
-                        <span className="section-tag">Latest Projects</span>
-                        <h2 className="section-title">Trending Campaigns</h2>
+                        <span className="section-tag">Featured Campaigns</span>
+                        <h2 className="section-title">Trending Fundraisers</h2>
                         <p className="section-subtitle">
-                            Discover innovative projects seeking funding right now
+                            These campaigns need your support right now
                         </p>
                     </div>
 
@@ -163,43 +229,86 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className="empty-state">
-                            <Rocket size={64} className="empty-icon" />
+                            <Heart size={64} className="empty-icon" />
                             <h3>No campaigns yet</h3>
-                            <p>Be the first to create a campaign!</p>
-                            <a href="/create" className="btn-primary">
-                                Create Campaign
-                            </a>
+                            <p>Be the first to create a campaign and start making a difference!</p>
+                            <Link to="/create" className="btn-primary">
+                                Start a Fundraiser
+                            </Link>
                         </div>
                     )}
 
                     {campaigns.length > 0 && (
                         <div className="section-footer">
-                            <a href="/campaigns" className="btn-view-all">
+                            <Link to="/campaigns" className="btn-view-all">
                                 View All Campaigns
                                 <ArrowRight size={18} />
-                            </a>
+                            </Link>
                         </div>
                     )}
+                </div>
+            </section>
+
+            {/* How It Works Section */}
+            <section className="how-it-works-section">
+                <div className="section-container">
+                    <div className="section-header">
+                        <span className="section-tag">How It Works</span>
+                        <h2 className="section-title">Start Fundraising in 3 Easy Steps</h2>
+                        <p className="section-subtitle">
+                            It's simple, secure, and takes just a few minutes
+                        </p>
+                    </div>
+
+                    <div className="steps-grid">
+                        {steps.map((step) => (
+                            <div key={step.number} className="step-card">
+                                <div className="step-number">{step.number}</div>
+                                <h3 className="step-title">{step.title}</h3>
+                                <p className="step-description">{step.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Features Section */}
+            <section className="features-section">
+                <div className="section-container">
+                    <div className="section-header">
+                        <span className="section-tag">Why FundHope</span>
+                        <h2 className="section-title">Built for Trust & Transparency</h2>
+                        <p className="section-subtitle">
+                            We leverage blockchain technology to make crowdfunding more secure and transparent
+                        </p>
+                    </div>
+
+                    <div className="features-grid">
+                        {features.map((feature, index) => (
+                            <div key={index} className="feature-card">
+                                <div className="feature-icon">
+                                    <feature.icon size={28} />
+                                </div>
+                                <h3 className="feature-title">{feature.title}</h3>
+                                <p className="feature-description">{feature.description}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* CTA Section */}
             <section className="cta-section">
                 <div className="cta-container">
-                    <div className="cta-content">
-                        <h2 className="cta-title">Ready to Start Your Journey?</h2>
-                        <p className="cta-subtitle">
-                            Create your campaign in minutes and start receiving funds from backers worldwide.
-                        </p>
-                        <a href="/create" className="btn-cta">
-                            Launch Your Campaign
-                            <ArrowRight size={20} />
-                        </a>
-                    </div>
-                    <div className="cta-decoration">
-                        <div className="cta-circle"></div>
-                        <div className="cta-circle-2"></div>
-                    </div>
+                    <h2 className="cta-title">Ready to Make a Difference?</h2>
+                    <p className="cta-subtitle">
+                        Start your fundraiser today and join thousands of people who have
+                        successfully raised funds for causes they care about.
+                    </p>
+                    <Link to="/create" className="btn-cta">
+                        Start Your Fundraiser Now
+                        <ArrowRight size={20} />
+                    </Link>
                 </div>
             </section>
         </div>

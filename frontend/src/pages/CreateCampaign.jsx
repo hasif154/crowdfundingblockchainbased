@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useWeb3 } from '../context/Web3Context';
 import { ethers } from 'ethers';
+import { Link } from 'react-router-dom';
 import {
-    Rocket,
+    Heart,
     Image,
     Type,
     FileText,
@@ -10,12 +11,15 @@ import {
     Calendar,
     AlertCircle,
     CheckCircle,
-    Loader
+    Loader,
+    Lightbulb,
+    Check,
+    Wallet
 } from 'lucide-react';
 import './CreateCampaign.css';
 
 const CreateCampaign = () => {
-    const { contract, isConnected, connectWallet } = useWeb3();
+    const { contract, isConnected, connectWallet, wrongNetwork, error: web3Error, switchToLocalNetwork } = useWeb3();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -78,24 +82,55 @@ const CreateCampaign = () => {
             }, 2000);
         } catch (err) {
             console.error('Error creating campaign:', err);
-            setError(err.message || 'Failed to create campaign');
+
+            // Handle specific error types
+            const errorMessage = err.message || 'Failed to create campaign';
+            if (errorMessage.includes('403') || errorMessage.includes('RPC endpoint') || errorMessage.includes('coalesce')) {
+                setError('Network error: Please make sure Hardhat node is running (npx hardhat node) and MetaMask is connected to localhost:8545');
+            } else if (errorMessage.includes('user rejected')) {
+                setError('Transaction was rejected by user');
+            } else {
+                setError(errorMessage);
+            }
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    if (!isConnected) {
+    if (!isConnected || wrongNetwork) {
         return (
             <div className="create-page">
                 <div className="connect-prompt">
                     <div className="prompt-icon">
-                        <Rocket size={48} />
+                        <Wallet size={40} />
                     </div>
-                    <h2>Connect Your Wallet</h2>
-                    <p>You need to connect your wallet to create a campaign</p>
-                    <button className="btn-connect-prompt" onClick={connectWallet}>
-                        Connect Wallet
-                    </button>
+                    <h2>{wrongNetwork ? 'Wrong Network' : 'Connect Your Wallet'}</h2>
+                    <p>
+                        {wrongNetwork
+                            ? 'Please switch to Hardhat Local network (Chain ID: 31337) to continue'
+                            : 'You need to connect your wallet to create a fundraiser'
+                        }
+                    </p>
+                    {web3Error && (
+                        <div className="error-banner" style={{ marginBottom: '20px', textAlign: 'left' }}>
+                            <AlertCircle size={20} />
+                            <span>{web3Error}</span>
+                        </div>
+                    )}
+                    {wrongNetwork ? (
+                        <button className="btn-connect-prompt" onClick={switchToLocalNetwork}>
+                            <AlertCircle size={20} />
+                            Switch to Hardhat Network
+                        </button>
+                    ) : (
+                        <button className="btn-connect-prompt" onClick={connectWallet}>
+                            <Wallet size={20} />
+                            Connect Wallet
+                        </button>
+                    )}
+                    <p style={{ marginTop: '20px', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                        Make sure Hardhat node is running: <code style={{ background: 'var(--color-bg-tertiary)', padding: '2px 6px', borderRadius: '4px' }}>npx hardhat node</code>
+                    </p>
                 </div>
             </div>
         );
@@ -106,10 +141,10 @@ const CreateCampaign = () => {
             <div className="create-page">
                 <div className="success-message">
                     <div className="success-icon">
-                        <CheckCircle size={64} />
+                        <CheckCircle size={48} />
                     </div>
-                    <h2>Campaign Created!</h2>
-                    <p>Your campaign has been successfully created on the blockchain.</p>
+                    <h2>Fundraiser Created! 🎉</h2>
+                    <p>Your fundraiser has been successfully created on the blockchain.</p>
                     <p className="redirect-text">Redirecting to campaigns...</p>
                 </div>
             </div>
@@ -118,16 +153,27 @@ const CreateCampaign = () => {
 
     return (
         <div className="create-page">
-            <div className="create-container">
-                <div className="create-header">
+            <div className="create-header">
+                <div className="create-header-container">
                     <div className="header-icon">
-                        <Rocket size={32} />
+                        <Heart size={36} />
                     </div>
-                    <h1>Launch Your Campaign</h1>
-                    <p>Create a new crowdfunding campaign on the blockchain</p>
+                    <h1 className="create-page-title">Start Your Fundraiser</h1>
+                    <p className="create-page-subtitle">
+                        Create a campaign in minutes and start receiving donations from supporters worldwide
+                    </p>
                 </div>
+            </div>
 
+            <div className="create-container">
                 <form className="create-form" onSubmit={handleSubmit}>
+                    {/* Progress Steps */}
+                    <div className="form-steps">
+                        <div className="step-dot active"></div>
+                        <div className="step-dot"></div>
+                        <div className="step-dot"></div>
+                    </div>
+
                     {error && (
                         <div className="error-banner">
                             <AlertCircle size={20} />
@@ -146,24 +192,25 @@ const CreateCampaign = () => {
                             name="title"
                             value={formData.title}
                             onChange={handleChange}
-                            placeholder="Enter a compelling title for your campaign"
+                            placeholder="E.g., Help Ravi fight cancer"
                             maxLength={100}
                         />
                         <span className="char-count">{formData.title.length}/100</span>
+                        <p className="form-hint">Write a clear, specific title that explains your fundraiser</p>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="description">
                             <FileText size={18} />
-                            <span>Description</span>
+                            <span>Your Story</span>
                         </label>
                         <textarea
                             id="description"
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
-                            placeholder="Describe your project, its goals, and why people should support it..."
-                            rows={5}
+                            placeholder="Share your story - why you're raising funds, how it will help, and what impact donors will make..."
+                            rows={6}
                             maxLength={1000}
                         />
                         <span className="char-count">{formData.description.length}/1000</span>
@@ -172,7 +219,7 @@ const CreateCampaign = () => {
                     <div className="form-group">
                         <label htmlFor="imageURI">
                             <Image size={18} />
-                            <span>Image URL</span>
+                            <span>Cover Image URL</span>
                         </label>
                         <input
                             type="url"
@@ -182,6 +229,7 @@ const CreateCampaign = () => {
                             onChange={handleChange}
                             placeholder="https://example.com/your-image.jpg"
                         />
+                        <p className="form-hint">Add a compelling image that represents your cause</p>
                         {formData.imageURI && (
                             <div className="image-preview">
                                 <img
@@ -237,15 +285,41 @@ const CreateCampaign = () => {
                         {isSubmitting ? (
                             <>
                                 <Loader className="spin" size={20} />
-                                <span>Creating Campaign...</span>
+                                <span>Creating Your Fundraiser...</span>
                             </>
                         ) : (
                             <>
-                                <Rocket size={20} />
-                                <span>Launch Campaign</span>
+                                <Heart size={20} />
+                                <span>Launch Fundraiser</span>
                             </>
                         )}
                     </button>
+
+                    {/* Tips Card */}
+                    <div className="tips-card">
+                        <div className="tips-title">
+                            <Lightbulb size={18} />
+                            <span>Tips for a successful fundraiser</span>
+                        </div>
+                        <ul className="tips-list">
+                            <li>
+                                <Check size={16} />
+                                <span>Use a clear, emotional title that explains your cause</span>
+                            </li>
+                            <li>
+                                <Check size={16} />
+                                <span>Share your story with specific details and how funds will be used</span>
+                            </li>
+                            <li>
+                                <Check size={16} />
+                                <span>Add a high-quality, relevant image</span>
+                            </li>
+                            <li>
+                                <Check size={16} />
+                                <span>Set a realistic goal and timeline</span>
+                            </li>
+                        </ul>
+                    </div>
                 </form>
             </div>
         </div>

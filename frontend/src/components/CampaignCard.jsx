@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ethers } from 'ethers';
 import { STATUS, STATUS_COLORS } from '../config/contract';
 import { useWeb3 } from '../context/Web3Context';
-import { Clock, Target, Users, TrendingUp, ExternalLink } from 'lucide-react';
+import { Clock, Target, Heart, TrendingUp, Users, AlertCircle, Send } from 'lucide-react';
 import './CampaignCard.css';
 
 const CampaignCard = ({ campaign, onContribute }) => {
@@ -30,6 +30,7 @@ const CampaignCard = ({ campaign, onContribute }) => {
     const daysLeft = Math.max(0, Math.floor((Number(endsAt) * 1000 - Date.now()) / (1000 * 60 * 60 * 24)));
     const isActive = Number(status) === 0;
     const isCreator = account?.toLowerCase() === creator.toLowerCase();
+    const isUrgent = daysLeft <= 5 && isActive;
 
     const handleContribute = async () => {
         if (!amount || !contract) return;
@@ -53,6 +54,14 @@ const CampaignCard = ({ campaign, onContribute }) => {
 
     const formatAddress = (addr) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
+    const getStatusClass = () => {
+        switch (Number(status)) {
+            case 0: return 'active';
+            case 2: return 'successful';
+            default: return 'ended';
+        }
+    };
+
     return (
         <div className="campaign-card">
             <div className="card-image">
@@ -64,46 +73,52 @@ const CampaignCard = ({ campaign, onContribute }) => {
                     }}
                 />
                 <div className="card-overlay">
-                    <span
-                        className="status-badge"
-                        style={{ backgroundColor: STATUS_COLORS[status] }}
-                    >
+                    <span className={`status-badge ${getStatusClass()}`}>
                         {STATUS[status]}
                     </span>
                     {isCreator && (
                         <span className="creator-badge">Your Campaign</span>
                     )}
                 </div>
+                {isUrgent && (
+                    <div className="urgent-badge">
+                        <AlertCircle size={12} />
+                        <span>Ending Soon</span>
+                    </div>
+                )}
             </div>
 
             <div className="card-content">
                 <h3 className="card-title">{title}</h3>
                 <p className="card-description">{description}</p>
 
-                <div className="card-stats">
-                    <div className="stat">
-                        <Target size={16} />
-                        <span>{goalEth} ETH</span>
-                    </div>
-                    <div className="stat">
-                        <Clock size={16} />
-                        <span>{daysLeft} days left</span>
-                    </div>
-                </div>
-
                 <div className="progress-section">
-                    <div className="progress-header">
-                        <span className="raised-amount">
-                            <TrendingUp size={14} />
-                            {raisedEth} ETH raised
-                        </span>
-                        <span className="progress-percent">{Math.min(100, progress).toFixed(1)}%</span>
-                    </div>
                     <div className="progress-bar">
                         <div
                             className="progress-fill"
                             style={{ width: `${Math.min(100, progress)}%` }}
                         />
+                    </div>
+                    <div className="progress-stats">
+                        <div className="raised-info">
+                            <span className="raised-amount">{raisedEth} ETH</span>
+                            <span className="raised-label">raised of {goalEth} ETH</span>
+                        </div>
+                        <div className="goal-info">
+                            <span className="goal-amount">{Math.min(100, progress).toFixed(0)}%</span>
+                            <span className="goal-label">funded</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="card-stats">
+                    <div className="stat">
+                        <Clock />
+                        <span>{daysLeft} days left</span>
+                    </div>
+                    <div className="stat">
+                        <Users />
+                        <span>Backers</span>
                     </div>
                 </div>
 
@@ -112,15 +127,19 @@ const CampaignCard = ({ campaign, onContribute }) => {
                         <div className="creator-avatar">
                             {creator.slice(2, 4).toUpperCase()}
                         </div>
-                        <span className="creator-address">{formatAddress(creator)}</span>
+                        <div className="creator-details">
+                            <span className="creator-label">Created by</span>
+                            <span className="creator-address">{formatAddress(creator)}</span>
+                        </div>
                     </div>
 
                     {isActive && isConnected && !isCreator && (
                         <button
-                            className="btn-contribute"
+                            className="btn-donate"
                             onClick={() => setShowContribute(!showContribute)}
                         >
-                            Fund Project
+                            <Heart size={16} />
+                            <span>Donate Now</span>
                         </button>
                     )}
                 </div>
@@ -132,7 +151,7 @@ const CampaignCard = ({ campaign, onContribute }) => {
                                 type="number"
                                 step="0.001"
                                 min="0"
-                                placeholder="Amount in ETH"
+                                placeholder="Enter amount"
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 className="contribute-input"
@@ -144,7 +163,8 @@ const CampaignCard = ({ campaign, onContribute }) => {
                             onClick={handleContribute}
                             disabled={isContributing || !amount}
                         >
-                            {isContributing ? 'Sending...' : 'Send'}
+                            <Send size={16} />
+                            <span>{isContributing ? 'Sending...' : 'Send'}</span>
                         </button>
                     </div>
                 )}

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Web3Provider } from './context/Web3Context';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Campaigns from './pages/Campaigns';
 import CreateCampaign from './pages/CreateCampaign';
@@ -19,6 +20,7 @@ function App() {
               <Route path="/create" element={<CreateCampaign />} />
             </Routes>
           </main>
+          <Footer />
         </div>
       </Router>
     </Web3Provider>

@@ -1,18 +1,19 @@
 .campaign-card {
     background: var(--color-bg-card);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
     overflow: hidden;
     transition: all var(--transition-normal);
-    animation: slideUp 0.5s ease forwards;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-border);
 }
 
 .campaign-card:hover {
-    border-color: var(--color-border-hover);
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: transparent;
 }
 
+/* Card Image */
 .card-image {
     position: relative;
     height: 200px;
@@ -43,15 +44,28 @@
 .status-badge {
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: white;
+    backdrop-filter: blur(4px);
+}
+
+.status-badge.active {
+    background: var(--color-success);
+}
+
+.status-badge.successful {
+    background: var(--color-info);
+}
+
+.status-badge.ended {
+    background: var(--color-text-muted);
 }
 
 .creator-badge {
-    background: var(--gradient-accent);
+    background: var(--gradient-secondary);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
     font-size: 0.7rem;
@@ -59,6 +73,7 @@
     color: white;
 }
 
+/* Card Content */
 .card-content {
     padding: var(--spacing-lg);
     display: flex;
@@ -66,20 +81,32 @@
     gap: var(--spacing-md);
 }
 
+.card-category {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--color-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 .card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: var(--color-text-primary);
-    line-height: 1.3;
+    line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    min-height: 3.1rem;
 }
 
 .card-description {
     color: var(--color-text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -87,48 +114,11 @@
     overflow: hidden;
 }
 
-.card-stats {
-    display: flex;
-    gap: var(--spacing-lg);
-}
-
-.stat {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-}
-
-.stat svg {
-    color: var(--color-primary-light);
-}
-
+/* Progress Section */
 .progress-section {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-}
-
-.progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.raised-amount {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    color: var(--color-accent);
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.progress-percent {
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-    font-weight: 500;
 }
 
 .progress-bar {
@@ -146,21 +136,67 @@
     position: relative;
 }
 
-.progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent);
-    animation: shimmer 2s infinite;
-    background-size: 200% 100%;
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
+.raised-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.raised-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.raised-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.goal-info {
+    text-align: right;
+}
+
+.goal-amount {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.goal-label {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+/* Card Stats */
+.card-stats {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-border);
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+.stat svg {
+    color: var(--color-secondary);
+    width: 16px;
+    height: 16px;
+}
+
+/* Card Footer */
 .card-footer {
     display: flex;
     justify-content: space-between;
@@ -176,44 +212,67 @@
 }
 
 .creator-avatar {
-    width: 32px;
-    height: 32px;
-    background: var(--gradient-accent);
+    width: 36px;
+    height: 36px;
+    background: var(--gradient-secondary);
     border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: white;
 }
 
-.creator-address {
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    font-family: 'Fira Code', monospace;
+.creator-details {
+    display: flex;
+    flex-direction: column;
 }
 
-.btn-contribute {
+.creator-label {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.creator-address {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    font-family: 'Courier New', monospace;
+}
+
+/* Donate Button */
+.btn-donate {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     background: var(--gradient-primary);
     color: white;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     padding: var(--spacing-sm) var(--spacing-lg);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
 }
 
-.btn-contribute:hover {
+.btn-donate:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
+.btn-donate svg {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Contribute Section */
 .contribute-section {
     display: flex;
     gap: var(--spacing-sm);
-    padding-top: var(--spacing-md);
-    border-top: 1px solid var(--color-border);
+    padding: var(--spacing-md);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-md);
     animation: slideUp 0.3s ease;
 }
 
@@ -224,8 +283,8 @@
 
 .contribute-input {
     width: 100%;
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border);
     color: var(--color-text-primary);
     font-size: 0.9rem;
     padding: var(--spacing-sm) var(--spacing-md);
@@ -236,7 +295,7 @@
 
 .contribute-input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 0 0 3px var(--color-primary-bg);
 }
 
 .contribute-input::placeholder {
@@ -250,24 +309,58 @@
     transform: translateY(-50%);
     color: var(--color-text-muted);
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .btn-send {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     background: var(--color-success);
     color: white;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     padding: var(--spacing-sm) var(--spacing-lg);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
 }
 
 .btn-send:hover:not(:disabled) {
-    background: #16a34a;
+    background: #00a07e;
+    transform: translateY(-1px);
 }
 
 .btn-send:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Urgent Badge */
+.urgent-badge {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: var(--spacing-md);
+    background: var(--color-error);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .card-footer {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .btn-donate {
+        width: 100%;
+        justify-content: center;
+    }
 }
