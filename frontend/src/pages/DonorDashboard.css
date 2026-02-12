@@ -526,6 +526,96 @@
     width: 40%;
 }
 
+/* ===== DEMO CAMPAIGN STYLES ===== */
+.demo-badge-tag {
+    padding: 4px 10px;
+    background: rgba(108, 92, 231, 0.85);
+    color: white;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.demo-notice {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(108, 92, 231, 0.06);
+    border-radius: 8px;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+}
+
+.demo-notice svg {
+    color: #6c5ce7;
+    flex-shrink: 0;
+}
+
+.btn-donate-demo {
+    opacity: 0.7;
+    cursor: default !important;
+}
+
+.btn-donate-demo:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ===== BOTTOM CONNECT PROMPT ===== */
+.connect-prompt-bottom {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 36px;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.06), rgba(0, 168, 168, 0.06));
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+}
+
+.connect-prompt-bottom svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.connect-prompt-bottom h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+}
+
+.connect-prompt-bottom p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.btn-connect-bottom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.btn-connect-bottom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
     .donor-stats-bar {
@@ -567,5 +657,15 @@
 
     .btn-switch-role {
         display: none;
+    }
+
+    .connect-prompt-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .btn-connect-bottom {
+        margin-left: 0;
     }
 }
